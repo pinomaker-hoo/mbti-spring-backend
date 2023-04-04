@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface UserJpaRepository extends JpaRepository<User, Long> {
     Optional<User> findUserById(String id);
 
+    Optional<User> findUserByIdx(Long idx);
+
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesById(String name);
 }

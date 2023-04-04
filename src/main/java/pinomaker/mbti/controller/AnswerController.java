@@ -1,8 +1,9 @@
 package pinomaker.mbti.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pinomaker.mbti.common.dto.RequestResponseDto;
+import pinomaker.mbti.dto.RequestSaveAnswerDto;
 import pinomaker.mbti.service.AnswerService;
 
 @RestController
@@ -10,4 +11,14 @@ import pinomaker.mbti.service.AnswerService;
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerService answerService;
+
+    @PostMapping("/{id}")
+    private RequestResponseDto<?> saveAnswer(@RequestBody RequestSaveAnswerDto dto, @PathVariable(name = "id") Long id ){
+        return answerService.save(dto, id);
+    }
+
+    @GetMapping("/{id}")
+    private RequestResponseDto<?> findAnswerList(@PathVariable(name = "id") Long id ){
+        return answerService.findAll(id);
+    }
 }
