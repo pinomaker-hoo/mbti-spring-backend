@@ -19,7 +19,7 @@ import pinomaker.mbti.dto.RequestSaveUserDto;
 import pinomaker.mbti.dto.RequestTokenDto;
 import pinomaker.mbti.jwt.TokenDto;
 import pinomaker.mbti.jwt.TokenProvider;
-import pinomaker.mbti.repository.RefreshTokenRepository;
+import pinomaker.mbti.repository.RefreshJpaTokenRepository;
 import pinomaker.mbti.repository.UserJpaRepository;
 import pinomaker.mbti.service.UserService;
 
@@ -31,7 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserJpaRepository userJpaRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshJpaTokenRepository refreshJpaTokenRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -76,14 +76,14 @@ public class UserServiceImpl implements UserService {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAuthKeyAndType(authentication.getName(), "user");
+            Optional<RefreshToken> refreshToken = refreshJpaTokenRepository.findByAuthKeyAndType(authentication.getName(), "user");
 
             TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
             if (refreshToken.isPresent()) {
-                refreshTokenRepository.save(refreshToken.get().updateValue(tokenDto.getRefreshToken()));
+                refreshJpaTokenRepository.save(refreshToken.get().updateValue(tokenDto.getRefreshToken()));
             } else {
-                refreshTokenRepository.save(RefreshToken.refreshTokenBuilder()
+                refreshJpaTokenRepository.save(RefreshToken.refreshTokenBuilder()
                         .authKey(authentication.getName())
                         .authValue(tokenDto.getRefreshToken())
                         .type("user")
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
 
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAuthKeyAndType(authentication.getName(), "user");
+        Optional<RefreshToken> refreshToken = refreshJpaTokenRepository.findByAuthKeyAndType(authentication.getName(), "user");
 
         if (refreshToken.isEmpty()) {
             return RequestResponseDto.of(HttpStatus.BAD_REQUEST, RequestResponseDto.Code.FAILED, "로그아웃 된 사용자 입니다.", false);
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
-        refreshTokenRepository.save(refreshToken.get().updateValue(tokenDto.getRefreshToken()));
+        refreshJpaTokenRepository.save(refreshToken.get().updateValue(tokenDto.getRefreshToken()));
 
         return RequestResponseDto.of(HttpStatus.OK, RequestResponseDto.Code.SUCCESS, "토큰 재발급에 성공 하였습니다.", tokenDto);
     }
