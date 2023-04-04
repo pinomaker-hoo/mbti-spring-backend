@@ -19,4 +19,4 @@ springdoc:
 
 logging:
   level:
-    mars.mars.todos: DEBUG
+    mars.mars.todos: debug
