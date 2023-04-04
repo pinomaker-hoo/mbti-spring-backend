@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pinomaker.mbti.common.domain.BaseTimeEntity;
+import pinomaker.mbti.common.dto.UserAuthority;
 
 import javax.persistence.*;
 
@@ -31,4 +32,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_mbti")
     private String mbti;
+
+    @Column(nullable = false)
+    private UserAuthority authority;
 }
