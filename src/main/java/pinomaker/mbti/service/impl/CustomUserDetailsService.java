@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pinomaker.mbti.domain.User;
 import pinomaker.mbti.repository.UserJpaRepository;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component("userDetailsService")
@@ -23,16 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserJpaRepository userRepository;
 
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(final String username) {
-        Optional<User> findUser = userRepository.findUserById(username);
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        return userRepository.findUserById(username).map(this::createUserDetails).orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+    }
 
-        if (findUser.isEmpty()) {
-            throw new UsernameNotFoundException(username);
-        }
-        return org.springframework.security.core.userdetails.User.withUsername(username)
-                .password(findUser.get().getPassword()).authorities(convertToSpringAuthorities(findUser))
-                .accountExpired(false).accountLocked(false).credentialsExpired(false).disabled(false).build();
+    private UserDetails createUserDetails(User user) {
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().toString());
+        return new org.springframework.security.core.userdetails.User(String.valueOf(user.getIdx()), user.getPassword(), Collections.singleton(grantedAuthority));
     }
 
     private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Optional<User> optUserAccount) {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pinomaker.mbti.common.dto.RequestResponseDto;
 import pinomaker.mbti.dto.RequestLoginUserDto;
 import pinomaker.mbti.dto.RequestSaveUserDto;
+import pinomaker.mbti.dto.RequestTokenDto;
 import pinomaker.mbti.service.UserService;
 
 @Slf4j
@@ -26,5 +27,10 @@ public class UserController {
     @PostMapping("/login")
     public RequestResponseDto<?> login(@RequestBody RequestLoginUserDto dto) {
         return userService.login(dto);
+    }
+
+    @PostMapping("/token")
+    public RequestResponseDto<?> token(@RequestBody RequestTokenDto dto) {
+        return userService.getTokenByRefreshToken(dto);
     }
 }

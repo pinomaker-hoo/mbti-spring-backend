@@ -1,10 +1,14 @@
 package pinomaker.mbti.jwt;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TokenDto {
-    private String token;
+    private String grantType;
+    private String accessToken;
+    private String refreshToken;
+    private Long accessTokenExpiresIn;
 }
