@@ -42,7 +42,7 @@ public class AnswerServiceImpl implements AnswerService {
     public RequestResponseDto<?> findAll() {
         String id = SecurityUtil.getCurrentUserId();
 
-        Optional<User> findUser = userJpaRepository.findUserByIdx(Long.valueOf(id));
+        Optional<User> findUser = userJpaRepository.findUserById(id);
 
         if (findUser.isEmpty()) {
             return RequestResponseDto.of(HttpStatus.BAD_REQUEST, RequestResponseDto.Code.FAILED, "존재하지 않는 계정 입니다.", false);
