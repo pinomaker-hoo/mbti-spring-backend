@@ -7,4 +7,6 @@ public interface AnswerService {
     RequestResponseDto<?> save(RequestSaveAnswerDto dto, Long idx);
 
     RequestResponseDto<?> findAll();
+
+    RequestResponseDto<?> findAllByGuest(Long idx);
 }

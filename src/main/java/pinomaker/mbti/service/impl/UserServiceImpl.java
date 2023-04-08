@@ -132,4 +132,13 @@ public class UserServiceImpl implements UserService {
 
         return RequestResponseDto.of(HttpStatus.OK, RequestResponseDto.Code.SUCCESS, "토큰 재발급에 성공 하였습니다.", tokenDto);
     }
+
+    public RequestResponseDto<?> findUserById(Long idx) {
+        try {
+            return RequestResponseDto.of(HttpStatus.OK, RequestResponseDto.Code.SUCCESS, "조회에 성공 하였습니다.", userJpaRepository.findUserByIdx(idx));
+        } catch (Exception e) {
+            logger.info("ERROR :" + e);
+            return RequestResponseDto.of(HttpStatus.INTERNAL_SERVER_ERROR, RequestResponseDto.Code.FAILED, e.getMessage(), null);
+        }
+    }
 }

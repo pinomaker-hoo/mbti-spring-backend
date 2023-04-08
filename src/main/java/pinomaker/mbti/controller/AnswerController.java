@@ -12,9 +12,14 @@ import pinomaker.mbti.service.AnswerService;
 public class AnswerController {
     private final AnswerService answerService;
 
-    @PostMapping("/{id}")
-    private RequestResponseDto<?> saveAnswer(@RequestBody RequestSaveAnswerDto dto, @PathVariable(name = "id") Long id ){
-        return answerService.save(dto, id);
+    @PostMapping("/mbti/{idx}")
+    private RequestResponseDto<?> saveAnswer(@RequestBody RequestSaveAnswerDto dto, @PathVariable(name = "idx") Long idx){
+        return answerService.save(dto, idx);
+    }
+
+    @GetMapping("/mbti/{idx}")
+    private RequestResponseDto<?> findAnswerListByGuest(@PathVariable(name = "idx") Long idx){
+        return answerService.findAllByGuest(idx);
     }
 
     @GetMapping()

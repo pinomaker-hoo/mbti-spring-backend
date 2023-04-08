@@ -28,13 +28,16 @@ public class AnswerServiceImpl implements AnswerService {
             return RequestResponseDto.of(HttpStatus.BAD_REQUEST, RequestResponseDto.Code.FAILED, "존재하지 않는 계정 입니다.", false);
         }
 
+        System.out.println(dto);
+
         Answer saveAnswer = Answer.builder()
                 .name(dto.getName())
-                .guestMbti(dto.getGusetMbti())
+                .guestMbti(dto.getGuestMbti())
                 .mbti(dto.getMbti())
                 .text(dto.getText())
                 .user(findUser.get()).build();
 
+        System.out.println("saveAnswer : " + saveAnswer);
         return RequestResponseDto.of(HttpStatus.OK, RequestResponseDto.Code.SUCCESS, "응답 생성 성공", answerJpaRepository.save(saveAnswer));
     }
 
@@ -43,6 +46,16 @@ public class AnswerServiceImpl implements AnswerService {
         String id = SecurityUtil.getCurrentUserId();
 
         Optional<User> findUser = userJpaRepository.findUserById(id);
+
+        if (findUser.isEmpty()) {
+            return RequestResponseDto.of(HttpStatus.BAD_REQUEST, RequestResponseDto.Code.FAILED, "존재하지 않는 계정 입니다.", false);
+        }
+
+        return RequestResponseDto.of(HttpStatus.OK, RequestResponseDto.Code.SUCCESS, "응답 조회 성공", answerJpaRepository.findAllByUser(findUser.get()));
+    }
+    @Override
+    public RequestResponseDto<?> findAllByGuest(Long idx) {
+        Optional<User> findUser = userJpaRepository.findUserByIdx(idx);
 
         if (findUser.isEmpty()) {
             return RequestResponseDto.of(HttpStatus.BAD_REQUEST, RequestResponseDto.Code.FAILED, "존재하지 않는 계정 입니다.", false);

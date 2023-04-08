@@ -6,6 +6,6 @@ import lombok.Data;
 public class RequestSaveAnswerDto {
     private String name;
     private String mbti;
-    private String gusetMbti;
+    private String guestMbti;
     private String text;
 }

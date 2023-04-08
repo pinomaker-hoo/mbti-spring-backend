@@ -32,7 +32,7 @@ public class SecurityConfig {
 
     private final String[] AUTH_WHITELIST = {
             "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**",
-            "/**", "/api/user", "/api/user/login", "/api/**", "/swagger-ui/index.html"};
+            "/**", "/api/user", "/api/user/login", "/swagger-ui/index.html", "/api/answer/mbti/**"};
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {

@@ -2,10 +2,7 @@ package pinomaker.mbti.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pinomaker.mbti.common.dto.RequestResponseDto;
 import pinomaker.mbti.dto.RequestLoginUserDto;
 import pinomaker.mbti.dto.RequestSaveUserDto;
@@ -32,5 +29,10 @@ public class UserController {
     @PostMapping("/token")
     public RequestResponseDto<?> token(@RequestBody RequestTokenDto dto) {
         return userService.getTokenByRefreshToken(dto);
+    }
+
+    @GetMapping("/{idx}")
+    public RequestResponseDto<?> getUser(@PathVariable(name = "idx") Long idx) {
+        return userService.findUserById(idx);
     }
 }

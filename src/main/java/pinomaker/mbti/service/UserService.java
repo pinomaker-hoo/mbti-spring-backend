@@ -11,4 +11,6 @@ public interface UserService {
     RequestResponseDto<?> login(RequestLoginUserDto dto);
 
     RequestResponseDto<?> getTokenByRefreshToken(RequestTokenDto dto);
+
+    RequestResponseDto<?> findUserById(Long idx);
 }
