@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://210.223.18.224:3306/mbti-dev
-    username: pino
-    password: qwer1595
+    url:
+    username:
+    password:
   jpa:
     show-sql: true
     hibernate:
