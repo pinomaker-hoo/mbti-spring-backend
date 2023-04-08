@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import pinomaker.mbti.jwt.JwtAuthenticationFilter;
+import pinomaker.mbti.jwt.TokenProvider;
 
 import java.util.Arrays;
 
@@ -25,6 +27,12 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CorsFilter corsFilter;
+
+    private final TokenProvider tokenProvider;
+
+    private final String[] AUTH_WHITELIST = {
+            "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**",
+            "/**", "/api/user", "/api/user/login", "/api/**", "/swagger-ui/index.html"};
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -44,8 +52,11 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("*").permitAll()
-                .anyRequest().permitAll();
+                .antMatchers( "/api/user/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
