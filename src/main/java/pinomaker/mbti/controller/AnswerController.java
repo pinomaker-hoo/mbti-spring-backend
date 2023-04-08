@@ -17,8 +17,8 @@ public class AnswerController {
         return answerService.save(dto, id);
     }
 
-    @GetMapping("/{id}")
-    private RequestResponseDto<?> findAnswerList(@PathVariable(name = "id") Long id ){
-        return answerService.findAll(id);
+    @GetMapping()
+    private RequestResponseDto<?> findAnswerList(){
+        return answerService.findAll();
     }
 }

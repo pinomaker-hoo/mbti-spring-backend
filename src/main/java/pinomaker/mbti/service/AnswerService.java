@@ -6,5 +6,5 @@ import pinomaker.mbti.dto.RequestSaveAnswerDto;
 public interface AnswerService {
     RequestResponseDto<?> save(RequestSaveAnswerDto dto, Long idx);
 
-    RequestResponseDto<?> findAll(Long idx);
+    RequestResponseDto<?> findAll();
 }

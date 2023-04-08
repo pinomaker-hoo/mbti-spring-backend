@@ -10,6 +10,7 @@ import pinomaker.mbti.dto.RequestSaveAnswerDto;
 import pinomaker.mbti.repository.AnswerJpaRepository;
 import pinomaker.mbti.repository.UserJpaRepository;
 import pinomaker.mbti.service.AnswerService;
+import pinomaker.mbti.util.SecurityUtil;
 
 import java.util.Optional;
 
@@ -38,8 +39,10 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public RequestResponseDto<?> findAll(Long idx) {
-        Optional<User> findUser = userJpaRepository.findUserByIdx(idx);
+    public RequestResponseDto<?> findAll() {
+        String id = SecurityUtil.getCurrentUserId();
+
+        Optional<User> findUser = userJpaRepository.findUserByIdx(Long.valueOf(id));
 
         if (findUser.isEmpty()) {
             return RequestResponseDto.of(HttpStatus.BAD_REQUEST, RequestResponseDto.Code.FAILED, "존재하지 않는 계정 입니다.", false);
