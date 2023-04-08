@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
             TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
             if (refreshToken.isPresent()) {
-                refreshJpaTokenRepository.save(refreshToken.get().updateValue(tokenDto.getRefreshToken()));
+                refreshToken.get().updateValue(tokenDto.getRefreshToken());
             } else {
                 refreshJpaTokenRepository.save(RefreshToken.refreshTokenBuilder()
                         .authKey(authentication.getName())
@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
 
             response.put("accessToken", tokenDto.getAccessToken());
             response.put("refreshToken", tokenDto.getRefreshToken());
+            response.put("id", findUser.get().getId());
             response.put("name", findUser.get().getName());
             response.put("mbti", findUser.get().getMbti());
             return RequestResponseDto.of(HttpStatus.OK, RequestResponseDto.Code.SUCCESS, "로그인 성공 하였습니다.", response);
