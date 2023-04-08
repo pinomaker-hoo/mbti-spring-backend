@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
 
             response.put("accessToken", tokenDto.getAccessToken());
             response.put("refreshToken", tokenDto.getRefreshToken());
+            response.put("idx", String.valueOf(findUser.get().getIdx()));
             response.put("id", findUser.get().getId());
             response.put("name", findUser.get().getName());
             response.put("mbti", findUser.get().getMbti());
