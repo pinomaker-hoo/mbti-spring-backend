@@ -6,6 +6,6 @@ import pinomaker.mbti.domain.User;
 
 import java.util.List;
 
-public interface AnswerJpaRepository extends JpaRepository<Answer, Long>, AnswerJpaCustomRepository {
+public interface AnswerJpaRepository extends JpaRepository<Answer, Long> {
     List<Answer> findAllByUser(User user);
 }
