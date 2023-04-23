@@ -7,7 +7,7 @@ import pinomaker.mbti.common.dto.RequestResponseDto;
 import pinomaker.mbti.domain.Answer;
 import pinomaker.mbti.domain.User;
 import pinomaker.mbti.dto.RequestSaveAnswerDto;
-import pinomaker.mbti.repository.AnswerJpaRepository;
+import pinomaker.mbti.repository.answer.AnswerJpaRepository;
 import pinomaker.mbti.repository.UserJpaRepository;
 import pinomaker.mbti.service.AnswerService;
 import pinomaker.mbti.util.SecurityUtil;
